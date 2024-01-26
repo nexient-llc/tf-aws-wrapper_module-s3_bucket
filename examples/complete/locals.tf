@@ -11,6 +11,5 @@
 // limitations under the License.
 
 locals {
-  naming_prefix = var.naming_prefix
-  tags          = merge(var.tags, { provisioner = "Terraform" })
+  tags = merge(var.tags, { provisioner = "Terraform" })
 }

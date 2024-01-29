@@ -10,10 +10,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "naming_prefix" {
-  description = "Prefix for the provisioned resources."
+variable "product_family" {
+  description = <<EOF
+    (Required) Name of the product family for which the resource is created.
+    Example: org_name, department_name.
+  EOF
   type        = string
-  default     = "example"
+  default     = "dso"
+}
+
+variable "product_service" {
+  description = <<EOF
+    (Required) Name of the product service for which the resource is created.
+    For example, backend, frontend, middleware etc.
+  EOF
+  type        = string
+  default     = "bucket"
 }
 
 variable "environment" {

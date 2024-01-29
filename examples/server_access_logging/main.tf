@@ -13,7 +13,8 @@
 module "s3_bucket" {
   source = "../.."
 
-  naming_prefix      = local.naming_prefix
+  product_family     = var.product_family
+  product_service    = var.product_service
   environment        = var.environment
   environment_number = var.environment_number
   region             = var.region

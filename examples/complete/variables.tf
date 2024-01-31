@@ -49,6 +49,7 @@ variable "resource_number" {
 variable "region" {
   description = "AWS Region in which the infra needs to be provisioned"
   default     = "us-east-2"
+  type        = string
 }
 
 variable "resource_names_map" {

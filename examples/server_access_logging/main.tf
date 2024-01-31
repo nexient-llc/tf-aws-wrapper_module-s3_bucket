@@ -64,15 +64,16 @@ module "s3_bucket_target" {
 
 
 module "resource_names" {
-  source = "git::https://github.com/nexient-llc/tf-module-resource_name?ref=0.1.0"
+  source = "git::https://github.com/nexient-llc/tf-module-resource_name?ref=1.0.0"
 
   for_each = var.resource_names_map
 
-  logical_product_name = var.naming_prefix
-  region               = join("", split("-", var.region))
-  class_env            = var.environment
-  cloud_resource_type  = each.value.name
-  instance_env         = var.environment_number
-  instance_resource    = var.resource_number
-  maximum_length       = each.value.max_length
+  logical_product_family  = var.product_family
+  logical_product_service = var.product_service
+  region                  = join("", split("-", var.region))
+  class_env               = var.environment
+  cloud_resource_type     = each.value.name
+  instance_env            = var.environment_number
+  instance_resource       = var.resource_number
+  maximum_length          = each.value.max_length
 }

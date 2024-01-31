@@ -49,6 +49,7 @@ variable "resource_number" {
 variable "region" {
   description = "AWS Region in which the infra needs to be provisioned"
   default     = "us-east-2"
+  type        = string
 }
 
 variable "resource_names_map" {
@@ -61,13 +62,13 @@ variable "resource_names_map" {
   ))
   default = {
     s3_bucket_source = {
-      name = "src-bkt"
+      name = "srcbkt"
     }
     s3_bucket_target = {
-      name = "target-bkt"
+      name = "tgtbkt"
     }
     target_bucket_reader_policy = {
-      name       = "target-bucket-plcy"
+      name       = "tgtplcy"
       max_length = 60
     }
   }
@@ -95,12 +96,6 @@ variable "restrict_public_buckets" {
   description = "Whether Amazon S3 should restrict public bucket policies for this bucket."
   type        = bool
   default     = true
-}
-
-variable "use_default_server_side_encryption" {
-  description = "Flag to indiate if default server side encryption should be used. SSE-KMS encryption is used if the flag value is set to false(which is default). If flag value is set to true then default server side encryption(encryption set by AWS for all S3 objects)"
-  type        = bool
-  default     = false
 }
 
 variable "kms_key_description" {
@@ -167,12 +162,6 @@ variable "tags" {
   description = "An arbitrary map of tags that can be added to all resources."
   type        = map(string)
   default     = {}
-}
-
-variable "access_log_delivery_policy_source_buckets" {
-  description = "(Optional) List of S3 bucket ARNs wich should be allowed to deliver access logs to this bucket."
-  type        = list(string)
-  default     = []
 }
 
 variable "access_log_delivery_policy_source_accounts" {

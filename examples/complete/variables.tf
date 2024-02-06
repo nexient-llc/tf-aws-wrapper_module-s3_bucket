@@ -24,16 +24,6 @@ variable "logical_product_family" {
     error_message = "The variable must contain letters, numbers, -, _, and .."
   }
 }
-
-variable "product_family" {
-  type        = string
-  description = <<EOF
-    (Required) Name of the product family for which the resource is created.
-    Example: org_name, department_name.
-  EOF
-  default     = "launch"
-}
-
 variable "logical_product_service" {
   type        = string
   description = <<EOF
@@ -48,16 +38,6 @@ variable "logical_product_service" {
     error_message = "The variable must contain letters, numbers, -, _, and .."
   }
 }
-
-variable "product_service" {
-  type        = string
-  description = <<EOF
-    (Required) Name of the product service for which the resource is created.
-    For example, backend, frontend, middleware etc.
-  EOF
-  default     = "backend"
-}
-
 
 variable "region" {
   type        = string

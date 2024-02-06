@@ -13,10 +13,10 @@
 module "s3_bucket" {
   source = "../.."
 
-  product_family  = var.product_family
-  product_service = var.product_service
-  region          = var.region
-  class_env       = var.class_env
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = var.region
+  class_env               = var.class_env
 
   block_public_acls       = var.block_public_acls
   block_public_policy     = var.block_public_policy

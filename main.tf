@@ -15,8 +15,8 @@ module "resource_names" {
 
   for_each = var.resource_names_map
 
-  logical_product_family  = var.product_family
-  logical_product_service = var.product_service
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
   region                  = join("", split("-", var.region))
   class_env               = var.class_env
   cloud_resource_type     = each.value.name

@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "product_family" {
+variable "logical_product_family" {
   type        = string
   description = <<EOF
     (Required) Name of the product family for which the resource is created.
@@ -18,9 +18,14 @@ variable "product_family" {
   EOF
   nullable    = false
   default     = "launch"
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_family))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
 }
 
-variable "product_service" {
+variable "logical_product_service" {
   type        = string
   description = <<EOF
     (Required) Name of the product service for which the resource is created.
@@ -28,6 +33,11 @@ variable "product_service" {
   EOF
   nullable    = false
   default     = "backend"
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_service))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
 }
 
 variable "region" {

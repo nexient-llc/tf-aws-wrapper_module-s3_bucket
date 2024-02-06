@@ -13,11 +13,10 @@
 module "s3_bucket" {
   source = "../.."
 
-  naming_prefix      = local.naming_prefix
-  environment        = var.environment
-  environment_number = var.environment_number
-  region             = var.region
-  resource_number    = var.resource_number
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = var.region
+  class_env               = var.class_env
 
   block_public_acls       = var.block_public_acls
   block_public_policy     = var.block_public_policy
@@ -44,10 +43,16 @@ module "s3_bucket" {
 resource "aws_kms_key" "kms_key" {
   description             = var.kms_key_description
   deletion_window_in_days = var.kms_key_deletion_window_in_days
+  enable_key_rotation     = true
 }
 
 module "s3_bucket_target" {
   source = "../.."
+
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = var.region
+  class_env               = var.class_env
 
   bucket_name                                = module.resource_names["s3_bucket_target"].recommended_per_length_restriction
   access_log_delivery_policy_source_buckets  = [module.s3_bucket.arn]
@@ -63,15 +68,16 @@ module "s3_bucket_target" {
 
 
 module "resource_names" {
-  source = "git::https://github.com/nexient-llc/tf-module-resource_name?ref=0.1.0"
+  source = "git::https://github.com/nexient-llc/tf-module-resource_name?ref=1.0.0"
 
   for_each = var.resource_names_map
 
-  logical_product_name = var.naming_prefix
-  region               = join("", split("-", var.region))
-  class_env            = var.environment
-  cloud_resource_type  = each.value.name
-  instance_env         = var.environment_number
-  instance_resource    = var.resource_number
-  maximum_length       = each.value.max_length
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = join("", split("-", var.region))
+  class_env               = var.class_env
+  cloud_resource_type     = each.value.name
+  instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
+  maximum_length          = each.value.max_length
 }

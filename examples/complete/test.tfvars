@@ -1,4 +1,3 @@
-naming_prefix     = "demo"
 enable_versioning = false
 
 lifecycle_rule = [

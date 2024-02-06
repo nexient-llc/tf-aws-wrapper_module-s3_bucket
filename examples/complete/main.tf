@@ -28,13 +28,17 @@ module "s3_bucket" {
   bucket_key_enabled                 = var.bucket_key_enabled
   use_default_server_side_encryption = var.use_default_server_side_encryption
 
-  enable_versioning       = var.enable_versioning
-  policy                  = var.policy
-  lifecycle_rule          = var.lifecycle_rule
-  metric_configuration    = var.metric_configuration
-  analytics_configuration = var.analytics_configuration
-  bucket_name             = module.resource_names["s3_bucket"].recommended_per_length_restriction
-  tags                    = local.tags
+  enable_versioning        = var.enable_versioning
+  policy                   = var.policy
+  lifecycle_rule           = var.lifecycle_rule
+  metric_configuration     = var.metric_configuration
+  analytics_configuration  = var.analytics_configuration
+  bucket_name              = module.resource_names["s3_bucket"].recommended_per_length_restriction
+  tags                     = local.tags
+  object_ownership         = var.object_ownership
+  control_object_ownership = var.control_object_ownership
+  acl                      = var.acl
+
 }
 
 resource "aws_kms_key" "kms_key" {

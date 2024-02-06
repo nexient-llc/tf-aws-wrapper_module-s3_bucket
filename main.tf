@@ -64,7 +64,9 @@ module "s3_bucket" {
   # `anytrue` function is added for the cases where policy may not be passed, but attach_policy variable value(true) will indicate that default policies defined in `terraform-aws-modules/s3-bucket/aws` module should be used.
   attach_policy = anytrue([var.attach_policy, try(contains(["", null, "null"], var.policy), true) ? false : true])
 
-  object_ownership = var.object_ownership
+  object_ownership         = var.object_ownership
+  control_object_ownership = var.control_object_ownership
+  acl                      = var.acl
 
 
   tags = merge(local.tags, { resource_name = local.bucket_name })

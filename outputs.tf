@@ -19,3 +19,8 @@ output "arn" {
   description = "ARN of the Autoscaling target"
   value       = module.s3_bucket.s3_bucket_arn
 }
+
+output "bucket_regional_domain_name" {
+  description = "The bucket region-specific domain name. The bucket domain name including the region name."
+  value       = module.s3_bucket.s3_bucket_bucket_regional_domain_name
+}

@@ -1,4 +1,3 @@
-naming_prefix     = "platform"
 enable_versioning = false
 
 lifecycle_rule = [

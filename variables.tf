@@ -10,46 +10,110 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "product_family" {
+variable "logical_product_family" {
+  type        = string
   description = <<EOF
     (Required) Name of the product family for which the resource is created.
     Example: org_name, department_name.
   EOF
-  type        = string
-  default     = "dso"
+  nullable    = false
+  default     = "launch"
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_family))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
 }
 
-variable "product_service" {
+variable "logical_product_service" {
+  type        = string
   description = <<EOF
     (Required) Name of the product service for which the resource is created.
     For example, backend, frontend, middleware etc.
   EOF
-  type        = string
-  default     = "bucket"
-}
+  nullable    = false
+  default     = "backend"
 
-variable "environment" {
-  description = "Environment in which the resource should be provisioned like dev, qa, prod etc."
-  type        = string
-  default     = "dev"
-}
-
-variable "environment_number" {
-  description = "The environment count for the respective environment. Defaults to 000. Increments in value of 1"
-  type        = string
-  default     = "000"
-}
-
-variable "resource_number" {
-  description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
-  type        = string
-  default     = "000"
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_service))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
 }
 
 variable "region" {
-  description = "AWS Region in which the infra needs to be provisioned"
   type        = string
+  description = <<EOF
+    (Required) The location where the resource will be created. Must not have spaces
+    For example, us-east-1, us-west-2, eu-west-1, etc.
+  EOF
+  nullable    = false
   default     = "us-east-2"
+
+  validation {
+    condition     = length(regexall("\\b \\b", var.region)) == 0
+    error_message = "Spaces between the words are not allowed."
+  }
+}
+
+variable "class_env" {
+  type        = string
+  description = "(Required) Environment where resource is going to be deployed. For example. dev, qa, uat"
+  nullable    = false
+  default     = "dev"
+
+  validation {
+    condition     = length(regexall("\\b \\b", var.class_env)) == 0
+    error_message = "Spaces between the words are not allowed."
+  }
+}
+
+variable "instance_env" {
+  type        = number
+  description = "Number that represents the instance of the environment."
+  default     = 0
+
+  validation {
+    condition     = var.instance_env >= 0 && var.instance_env <= 999
+    error_message = "Instance number should be between 1 to 999."
+  }
+}
+
+variable "instance_resource" {
+  type        = number
+  description = "Number that represents the instance of the resource."
+  default     = 0
+
+  validation {
+    condition     = var.instance_resource >= 0 && var.instance_resource <= 100
+    error_message = "Instance number should be between 1 to 100."
+  }
+}
+
+variable "maximum_length" {
+  type        = number
+  description = "Number that represents the maximum length the resource name could have."
+  default     = 60
+
+  validation {
+    condition     = var.maximum_length >= 10 && var.maximum_length <= 512
+    error_message = "Maximum length number should be between 24 to 512."
+  }
+}
+
+variable "separator" {
+  type        = string
+  description = "Separator to be used in the name"
+  default     = "-"
+
+  validation {
+    condition     = length(trimspace(var.separator)) == 1
+    error_message = "Length of the separator must be 1 character."
+  }
+
+  validation {
+    condition     = length(regexall("[._-]", var.separator)) > 0
+    error_message = "Only '.', '_', '-' are allowed as separator."
+  }
 }
 
 variable "resource_names_map" {
@@ -205,4 +269,22 @@ variable "attach_policy" {
   description = "Controls if S3 bucket should have bucket policy attached (set to `true` to use value of `policy` as bucket policy)"
   type        = bool
   default     = false
+}
+
+variable "object_ownership" {
+  description = "Object ownership. Valid values: BucketOwnerEnforced, BucketOwnerPreferred or ObjectWriter. 'BucketOwnerEnforced': ACLs are disabled, and the bucket owner automatically owns and has full control over every object in the bucket. 'BucketOwnerPreferred': Objects uploaded to the bucket change ownership to the bucket owner if the objects are uploaded with the bucket-owner-full-control canned ACL. 'ObjectWriter': The uploading account will own the object if the object is uploaded with the bucket-owner-full-control canned ACL."
+  type        = string
+  default     = "BucketOwnerEnforced"
+}
+
+variable "control_object_ownership" {
+  description = "Whether to manage S3 Bucket Ownership Controls on this bucket."
+  type        = bool
+  default     = false
+}
+
+variable "acl" {
+  description = "(Optional) The canned ACL to apply. Conflicts with `grant`"
+  type        = string
+  default     = null
 }

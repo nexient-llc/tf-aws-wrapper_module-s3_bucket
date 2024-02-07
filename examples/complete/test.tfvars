@@ -1,4 +1,3 @@
-naming_prefix     = "demo"
 enable_versioning = false
 
 lifecycle_rule = [
@@ -41,3 +40,5 @@ metric_configuration = [
 # Default server side encryption is disabled and SSE-KMS is used instead.
 use_default_server_side_encryption = false
 bucket_key_enabled                 = true
+object_ownership                   = "BucketOwnerPreferred"
+control_object_ownership           = true

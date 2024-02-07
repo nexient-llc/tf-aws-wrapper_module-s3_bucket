@@ -15,13 +15,13 @@ module "resource_names" {
 
   for_each = var.resource_names_map
 
-  logical_product_family  = var.product_family
-  logical_product_service = var.product_service
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
   region                  = join("", split("-", var.region))
-  class_env               = var.environment
+  class_env               = var.class_env
   cloud_resource_type     = each.value.name
-  instance_env            = var.environment_number
-  instance_resource       = var.resource_number
+  instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
   maximum_length          = each.value.max_length
 }
 
@@ -63,6 +63,10 @@ module "s3_bucket" {
   # Added a try as the below line throws error when var.policy is null
   # `anytrue` function is added for the cases where policy may not be passed, but attach_policy variable value(true) will indicate that default policies defined in `terraform-aws-modules/s3-bucket/aws` module should be used.
   attach_policy = anytrue([var.attach_policy, try(contains(["", null, "null"], var.policy), true) ? false : true])
+
+  object_ownership         = var.object_ownership
+  control_object_ownership = var.control_object_ownership
+  acl                      = var.acl
 
 
   tags = merge(local.tags, { resource_name = local.bucket_name })

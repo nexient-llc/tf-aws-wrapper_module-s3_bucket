@@ -44,10 +44,10 @@ variable "region" {
   type        = string
   description = <<EOF
     (Required) The location where the resource will be created. Must not have spaces
-    For example, us-east-2, useast2, West-US-2
+    For example, us-east-1, us-west-2, eu-west-1, etc.
   EOF
   nullable    = false
-  default     = "us-east-1"
+  default     = "us-east-2"
 
   validation {
     condition     = length(regexall("\\b \\b", var.region)) == 0

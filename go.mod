@@ -1,4 +1,4 @@
-module github.com/nexient-llc/tf-aws-wrapper_module-s3_bucket.git
+module github.com/nexient-llc/tf-aws-wrapper_module-s3_bucket
 
 go 1.15
 

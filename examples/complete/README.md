@@ -26,7 +26,7 @@ provider "random" {}
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.35.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.45.0 |
 
 ## Modules
 
@@ -79,4 +79,6 @@ provider "random" {}
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the S3 Bucket |
 | <a name="output_id"></a> [id](#output\_id) | ID of the S3 Bucket |
+| <a name="output_target_bucket_arn"></a> [target\_bucket\_arn](#output\_target\_bucket\_arn) | unused |
+| <a name="output_target_bucket_id"></a> [target\_bucket\_id](#output\_target\_bucket\_id) | unused |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

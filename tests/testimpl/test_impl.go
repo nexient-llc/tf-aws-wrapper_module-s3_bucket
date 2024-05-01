@@ -16,36 +16,36 @@ import (
 
 func TestDoesS3BucketExist(t *testing.T, ctx types.TestContext) {
 	s3Client := GetAWSS3Client(t)
-	bucket_arn := terraform.Output(t, ctx.TerratestTerraformOptions(), "arn")
-	target_bucket_arn := terraform.Output(t, ctx.TerratestTerraformOptions(), "target_bucket_arn")
-	bucket_name := strings.Split(bucket_arn, ":")[5]
-	target_bucket_name := ""
-	if target_bucket_arn != "" {
-		target_bucket_name = strings.Split(target_bucket_arn, ":")[5]
+	s3BucketList, err := s3Client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
+	if err != nil {
+		t.Errorf("Failure during ListBuckets: %v", err)
 	}
-	bucket_found := false
-	target_bucket_found := false
 
 	t.Run("TestDoesBucketExist", func(t *testing.T) {
-		s3BucketList, err := s3Client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
-		if err != nil {
-			t.Errorf("Failure during ListBuckets: %v", err)
-		}
+		bucket_arn := terraform.Output(t, ctx.TerratestTerraformOptions(), "arn")
+		bucket_name := strings.Split(bucket_arn, ":")[5]
+		bucket_found := false
 		for _, bucket := range s3BucketList.Buckets {
 			if *bucket.Name == bucket_name {
 				bucket_found = true
-			}
-			if target_bucket_name != "" && *bucket.Name == target_bucket_name {
-				target_bucket_found = true
-			}
-			if bucket_found && target_bucket_found {
 				break
 			}
 		}
 		assert.True(t, bucket_found, "Bucket not found")
-		if target_bucket_name != "" {
-			assert.True(t, target_bucket_found, "Target Bucket not found")
+	})
+
+	t.Run("TestDoesTargetBucketExist", func(t *testing.T) {
+		ctx.EnabledOnlyForTests(t, "server_access_logging")
+		target_bucket_arn := terraform.Output(t, ctx.TerratestTerraformOptions(), "target_bucket_arn")
+		target_bucket_name := strings.Split(target_bucket_arn, ":")[5]
+		target_bucket_found := false
+		for _, bucket := range s3BucketList.Buckets {
+			if *bucket.Name == target_bucket_name {
+				target_bucket_found = true
+				break
+			}
 		}
+		assert.True(t, target_bucket_found, "Target Bucket not found")
 	})
 }
 

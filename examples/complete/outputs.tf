@@ -18,12 +18,3 @@ output "id" {
   description = "ID of the S3 Bucket"
   value       = module.s3_bucket.id
 }
-output "target_bucket_arn" {
-  description = "unused"
-  value       = ""
-}
-
-output "target_bucket_id" {
-  description = "unused"
-  value       = ""
-}
